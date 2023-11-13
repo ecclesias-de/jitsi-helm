@@ -35,6 +35,10 @@ data:
   ENABLE_LIVESTREAMING: "true"
   {{-   end }}
   {{- end }}
+  {{- if or .Values.excalidrawbackend.enabled }}
+  WHITEBOARD_ENABLED: "1"
+  WHITEBOARD_COLLAB_SERVER_PUBLIC_URL: https://{{ .Values.excalidrawbackend.ingress.hostname }}/
+  {{- end }}
   TZ: '{{ .Values.tz }}'
   {{- range $key, $value := .Values.extraCommonEnvs }}
   {{- if not (kindIs "invalid" $value) }}

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "basename" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "labels" . | nindent 8 }}
+    spec:
+      # todo: incase image are in mw registry - pull secrets should be added to the service account
+      {{- if .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.deployment.imagePullSecrets}}
+      - {{ toYaml . }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: node
+          image: {{ .Values.deployment.node.image }}
+          imagePullPolicy: IfNotPresent
+          
+          {{- if .Values.debug.diagnoseMode.node.enabled}}
+          command: {{- toYaml .Values.debug.diagnoseMode.node.command  | nindent 12 }}
+          {{- end}}
+
+          env:
+            - name: PORT
+              value: "3000"
+
+          {{- if .Values.deployment.node.resources }}
+          resources: {{- toYaml .Values.deployment.node.resources | nindent 12 }}
+          {{- end }}
+          
+          ports:
+          - name: http
+            containerPort: 3000
+
+          {{- if .Values.debug.securityContext.enabled }}
+          securityContext:
+            runAsNonRoot: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop: [ALL]
+          {{- end }}

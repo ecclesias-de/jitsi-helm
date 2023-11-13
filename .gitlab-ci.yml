@@ -1,0 +1,16 @@
+package-chart:
+  image: alpine/k8s:1.25.15
+  before_script:
+    - helm registry login "${CI_REGISTRY}" -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}"
+  script:
+    - export CHART_VERSION=$(echo "${CI_COMMIT_TAG:-chart-0.0.0+${CI_COMMIT_SHORT_SHA}}" | cut -b 7-)
+    - yq e -i '.version = (strenv(CHART_VERSION))' Chart.yaml
+    - yq e -i '.dependencies[0].version = (strenv(CHART_VERSION))' Chart.yaml
+    - yq e -i '.dependencies[1].version = (strenv(CHART_VERSION))' Chart.yaml
+    - yq e -i '.version = (strenv(CHART_VERSION))' charts/prosody/Chart.yaml
+    - yq e -i '.version = (strenv(CHART_VERSION))' charts/excalidrawbackend/Chart.yaml
+    - helm package -d packagedChart/ -u .
+    - helm push packagedChart/jitsi-meet-${CHART_VERSION}.tgz "oci://${CI_REGISTRY_IMAGE}/chart"
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^chart-.*/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

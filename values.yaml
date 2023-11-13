@@ -347,6 +347,57 @@ jibri:
 
   extraEnvs: {}
 
+jigasi:
+  ## Enabling Jigasi
+  enabled: false
+
+  ## Configure the update strategy for Jigasi deployment.
+  # strategy:
+  #   type: RollingUpdate
+
+  image:
+    repository: jitsi/jigasi
+
+  securityContext: {}
+  podLabels: {}
+  podAnnotations: {}
+
+  breweryMuc: jigasibrewery
+  timeout: 90
+
+  ## jigasi XMPP user credentials:
+  xmpp:
+    user: jigasi
+    password:
+
+  # livenessProbe:
+  #   initialDelaySeconds: 5
+  #   periodSeconds: 5
+  #   failureThreshold: 2
+  #   exec:
+  #     command:
+  #       - /bin/bash
+  #       - "-c"
+  #       - >-
+  #         curl -sq localhost:2222/jibri/api/v1.0/health
+  #         | jq '"\(.status.health.healthStatus) \(.status.busyStatus)"'
+  #         | grep -qP 'HEALTHY (IDLE|BUSY)'
+
+  # readinessProbe:
+  #   initialDelaySeconds: 5
+  #   periodSeconds: 5
+  #   failureThreshold: 2
+  #   exec:
+  #     command:
+  #       - /bin/bash
+  #       - "-c"
+  #       - >-
+  #         curl -sq localhost:2222/jibri/api/v1.0/health
+  #         | jq '"\(.status.health.healthStatus) \(.status.busyStatus)"'
+  #         | grep -qP 'HEALTHY (IDLE|BUSY)'
+
+  extraEnvs: {}
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -375,12 +426,22 @@ prosody:
       name: '{{ include "prosody.fullname" . }}-jvb'
   - configMapRef:
       name: '{{ include "prosody.fullname" . }}-common'
+  ## Uncomment this if you want to use jigasi:   
+  # - secretRef:
+  #     name: '{{ include "prosody.fullname" . }}-jigasi'
   ## Uncomment this if you want to use jibri:
   # - secretRef:
   #     name: '{{ include "prosody.fullname" . }}-jibri'
   image:
     repository: jitsi/prosody
     tag: 'stable-9111'
+
+excalidrawbackend:
+  enabled: true
+  ingress:
+    annotations: {}
+      # kubernetes.io/tls-acme: "true"
+    hostname: 
 
 jvbs:
   # - publicIPs:

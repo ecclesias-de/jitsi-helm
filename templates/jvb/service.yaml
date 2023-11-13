@@ -12,7 +12,7 @@ metadata:
     metallb.universe.tf/loadBalancerIPs: {{ $jvb.loadBalancerIP }}
   labels:
     {{- include "jitsi-meet.jvb.labels" $root | nindent 4 }}
-    deployment: {{ $i }}
+    deployment: '{{ $i }}'
 spec:
   type: LoadBalancer
   ports:
@@ -21,6 +21,6 @@ spec:
       name: rtp-udp
   selector:
     {{- include "jitsi-meet.jvb.selectorLabels" $root | nindent 4 }}
-    deployment: {{ $i }}
+    deployment: '{{ $i }}'
 ---
 {{- end}}

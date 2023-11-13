@@ -7,18 +7,18 @@ metadata:
   name: {{ include "jitsi-meet.jvb.fullname" $root }}-{{ $i }}
   labels:
     {{- include "jitsi-meet.jvb.labels" $root | nindent 4 }}
-    deployment: {{ $i }}
+    deployment: '{{ $i }}'
 spec:
   replicas: 1
   selector:
     matchLabels:
       {{- include "jitsi-meet.jvb.selectorLabels" $root | nindent 6 }}
-      deployment: {{ $i }}
+      deployment: '{{ $i }}'
   template:
     metadata:
       labels:
         {{- include "jitsi-meet.jvb.selectorLabels" $root | nindent 8 }}
-        deployment: {{ $i }}
+        deployment: '{{ $i }}'
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/jvb/configmap.yaml") $root | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/jvb/xmpp-secret.yaml") $root | sha256sum }}
@@ -123,5 +123,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              {{- include "jitsi-meet.jvb.selectorLabels" $root | nindent 14 }}
 ---
 {{- end}}

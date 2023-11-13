@@ -24,3 +24,6 @@ dependencies:
   - name: prosody
     condition: prosody.enabled
     version: 1.3.8
+  - name: excalidrawbackend
+    condition: excalidrawbackend.enabled
+    version: 1.3.8

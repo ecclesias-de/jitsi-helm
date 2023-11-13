@@ -1,0 +1,34 @@
+deployment:
+  node:
+    image: tgrl/excalidraw-backend:latest
+    resources:
+      # limits:
+      #   cpu: 1m / 1
+      #   memory: 1Mi / 1Gi
+      # requests:
+      #   cpu: 1m / 1
+      #   memory: 1Mi / 1Gi
+
+  imagePullSecrets:
+  # - name: <secret name>
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/tls-acme: "true"
+  hostname: 
+  tls: true
+
+debug:
+  diagnoseMode:
+    node:
+      enabled: false
+      command:
+        - /bin/bash
+        - -c
+        - "echo diagnose mode: sleeping infinitely && sleep inf"
+  node:
+    image:
+      tag:
+  securityContext:
+    enabled: true

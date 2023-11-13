@@ -1,0 +1,26 @@
+{{- if .Values.jigasi.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jitsi-meet.jigasi.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.jigasi.labels" . | nindent 4 }}
+data:
+  JIGASI_ENABLE_SIP: 'true'
+  XMPP_SERVER: '{{ include "jitsi-meet.xmpp.server" . }}'
+  JIGASI_SIP_URI: '{{ .Values.jigasi.sipUri }}'
+  JIGASI_SIP_PASSWORD: '{{ .Values.jigasi.sipPassword }}'
+  JIGASI_SIP_PORT: '{{ .Values.jigasi.sipPort }}'
+  JIGASI_SIP_SERVER: '{{ .Values.jigasi.sipServer }}'
+  JIGASI_SIP_TRANSPORT: '{{ .Values.jigasi.sipTransport }}'
+  JIGASI_SIP_DEFAULT_ROOM: '{{ .Values.jigasi.sipDefaultRoom }}'
+  JIGASI_BREWERY_MUC: '{{ .Values.jigasi.breweryMuc }}'
+  JIGASI_PORT_MIN: '{{ .Values.jigasi.portMin }}'
+  JIGASI_PORT_MAX: '{{ .Values.jigasi.portMax }}'
+  ENABLE_TRANSCRIPTIONS: "false"
+  {{- range $key, $value := .Values.jigasi.extraEnvs }}
+  {{- if not (kindIs "invalid" $value) }}
+  {{ $key }}: {{ tpl $value $ | quote }}
+  {{- end }}
+  {{- end }}
+{{- end }}
