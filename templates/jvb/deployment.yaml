@@ -123,6 +123,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+<<<<<<< HEAD
 
       topologySpreadConstraints:
         - maxSkew: 1
@@ -131,5 +132,7 @@ spec:
           labelSelector:
             matchLabels:
               {{- include "jitsi-meet.jvb.selectorLabels" $root | nindent 14 }}
+=======
+>>>>>>> main
 ---
 {{- end}}
