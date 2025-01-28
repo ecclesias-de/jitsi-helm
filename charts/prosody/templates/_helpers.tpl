@@ -38,9 +38,10 @@ Common labels
 helm.sh/chart: {{ include "prosody.chart" . }}
 {{ include "prosody.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app.kubernetes.io/version: {{ .Values.image.tag }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/part-of: {{ .Release.Name }}
 {{- end -}}
 
 {{/*

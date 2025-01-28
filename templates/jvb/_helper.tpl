@@ -6,6 +6,7 @@
 {{- define "jitsi-meet.jvb.labels" -}}
 {{ include "jitsi-meet.labels" . }}
 app.kubernetes.io/component: jvb
+app.kubernetes.io/version: {{ .Values.jvb.image.tag }}
 {{- end -}}
 
 {{- define "jitsi-meet.jvb.selectorLabels" -}}

@@ -6,6 +6,7 @@
 {{- define "jitsi-meet.jigasi.labels" -}}
 {{ include "jitsi-meet.labels" . }}
 app.kubernetes.io/component: jigasi
+app.kubernetes.io/version: {{ .Values.web.image.tag }}
 {{- end -}}
 
 {{- define "jitsi-meet.jigasi.selectorLabels" -}}
