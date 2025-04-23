@@ -10,9 +10,13 @@ metadata:
     {{ $key }}: {{ $value | quote }}
   {{- end }}
     metallb.universe.tf/loadBalancerIPs: {{ $jvb.loadBalancerIP }}
+    lbipam.cilium.io/ips: {{ $jvb.loadBalancerIP }}
   labels:
     {{- include "jitsi-meet.jvb.labels" $root | nindent 4 }}
     deployment: '{{ $i }}'
+  {{- range $key, $value := $root.Values.jvb.service.labels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   type: LoadBalancer
   ports:
