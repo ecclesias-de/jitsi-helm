@@ -14,7 +14,7 @@ labels: {{ include "labels" . | nindent 4 }}
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/version: {{ .Values.deployment.node.image.tag }} 
+app.kubernetes.io/version: {{ .Values.deployment.node.image.tag | quote }} 
 helm.sh/chart: {{ .Chart.Name }}
 {{- end -}}
 
