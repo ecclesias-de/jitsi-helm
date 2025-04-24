@@ -21,7 +21,7 @@ spec:
       {{- end }}
       containers:
         - name: node
-          image: {{ .Values.deployment.node.image }}
+          image: {{ .Values.deployment.node.image.repo }}:{{ .Values.deployment.node.image.tag }}
           imagePullPolicy: IfNotPresent
           
           {{- if .Values.debug.diagnoseMode.node.enabled}}

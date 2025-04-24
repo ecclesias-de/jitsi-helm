@@ -1,6 +1,8 @@
 deployment:
   node:
-    image: tgrl/excalidraw-backend:latest
+    image:
+      repo: tgrl/excalidraw-backend
+      tag: latest
     resources:
       # limits:
       #   cpu: 1m / 1
