@@ -80,7 +80,7 @@ web:
 
   livenessProbe:
     httpGet:
-      path: /
+      path: /xmpp-websocket
       port: 80
   readinessProbe:
     httpGet:
